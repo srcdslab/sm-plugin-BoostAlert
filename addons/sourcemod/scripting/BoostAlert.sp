@@ -46,7 +46,9 @@ public Action EventHook_PlayerHurt(Event hEvent, const char[] sEventName, bool b
 		char sWeapon[64];
 		GetEventString(hEvent, "weapon", sWeapon, sizeof(sWeapon));
 
-		if (StrEqual(sWeapon, "m3"))
+		if (StrEqual(sWeapon, "m3") || StrEqual(sWeapon, "nova") || StrEqual(sWeapon, "deagle")
+			|| StrEqual(sWeapon, "mag7") || StrEqual(sWeapon, "revolver") || StrEqual(sWeapon, "sawedoff")
+			|| StrEqual(sWeapon, "xm1014"))
 		{
 			int time = GetTime();
 			int victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
