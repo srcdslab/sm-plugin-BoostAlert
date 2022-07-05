@@ -73,6 +73,7 @@ public Action EventHook_PlayerHurt(Event hEvent, const char[] sEventName, bool b
 			}
 		}
 	}
+	return Plugin_Continue;
 }
 
 public Action EventHook_RoundStart(Event hEvent, const char[] sEventName, bool bDontBroadcast)
@@ -84,6 +85,7 @@ public Action EventHook_RoundStart(Event hEvent, const char[] sEventName, bool b
 		g_iAttackerIDs[i] = -1;
 		g_iGameTimeSpam[i] = -1;
 	}
+	return Plugin_Continue;
 }
 
 public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, bool respawnOverride, bool respawn)
