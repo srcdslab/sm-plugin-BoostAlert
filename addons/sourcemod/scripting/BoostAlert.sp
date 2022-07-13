@@ -21,7 +21,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, maxime1907",
-	version			= "1.0.1",
+	version			= "1.0.2",
 	url				= "https://steamcommunity.com/id/BeholdTheBahamutSlayer"
 };
 
@@ -68,7 +68,7 @@ public Action EventHook_PlayerHurt(Event hEvent, const char[] sEventName, bool b
 				for (int i = 1; i <= MaxClients; i++)
 				{
 					if (IsClientConnected(i) && IsClientInGame(i) && (IsClientSourceTV(i) || GetAdminFlag(GetUserAdmin(i), Admin_Generic)))
-						CPrintToChat(i, "{green}[SM] {blue}%N {default}boosted {red}%N", attacker, victim);
+						CPrintToChat(i, "{green}[SM] {blue}%N {default}boosted {red}%N{default}. ({olive}%s{default})", attacker, victim, sWeapon);
 				}
 			}
 		}
