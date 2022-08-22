@@ -21,7 +21,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, maxime1907",
-	version			= "1.0.3",
+	version			= "1.0.2",
 	url				= "https://steamcommunity.com/id/BeholdTheBahamutSlayer"
 };
 
@@ -36,11 +36,6 @@ public void OnPluginStart()
 	HookEvent("round_start", EventHook_RoundStart, EventHookMode_Post);
 
 	AutoExecConfig(true);
-}
-
-public void OnMapEnd()
-{
-	UnhookEvent("round_start", EventHook_RoundStart, EventHookMode_Post);
 }
 
 public Action EventHook_PlayerHurt(Event hEvent, const char[] sEventName, bool bDontBroadcast)
