@@ -21,7 +21,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, maxime1907",
-	version			= "1.0.2",
+	version			= "1.0.3",
 	url				= "https://steamcommunity.com/id/BeholdTheBahamutSlayer"
 };
 
@@ -48,9 +48,11 @@ public Action EventHook_PlayerHurt(Event hEvent, const char[] sEventName, bool b
 		char sWeapon[64];
 		GetEventString(hEvent, "weapon", sWeapon, sizeof(sWeapon));
 
-		if (StrEqual(sWeapon, "m3") || StrEqual(sWeapon, "nova") || StrEqual(sWeapon, "deagle")
-			|| StrEqual(sWeapon, "mag7") || StrEqual(sWeapon, "revolver") || StrEqual(sWeapon, "sawedoff")
-			|| StrEqual(sWeapon, "xm1014"))
+		if (StrEqual(sWeapon, "m3") || StrEqual(sWeapon, "xm1014") // CS:S ShotsGun
+			|| StrEqual(sWeapon, "nova") || StrEqual(sWeapon, "sawedoff") || StrEqual(sWeapon, "mag7") // CS:GO ShotsGun
+			|| StrEqual(sWeapon, "awp") || StrEqual(sWeapon, "scout") || StrEqual(sWeapon, "ssg08") // Snipers
+			|| StrEqual(sWeapon, "sg550") || StrEqual(sWeapon, "g3sg1") || StrEqual(sWeapon, "scar20") // Semi-Auto Snipers
+			|| StrEqual(sWeapon, "deagle") || StrEqual(sWeapon, "revolver")) // Pistols
 		{
 			int time = GetTime();
 			int victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
