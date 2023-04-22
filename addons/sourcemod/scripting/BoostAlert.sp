@@ -1,7 +1,6 @@
 #pragma semicolon 1
 
 #include <sourcemod>
-
 #include <multicolors>
 #include <zombiereloaded>
 
@@ -22,7 +21,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, maxime1907",
-	version			= "1.0.3",
+	version			= "1.0.4",
 	url				= "https://steamcommunity.com/id/BeholdTheBahamutSlayer"
 };
 
@@ -99,7 +98,7 @@ public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, boo
 	int time = GetTime();
 	int diffTime = time - g_CVar_BoostDelay.IntValue;
 
-	if (attacker == g_iDamagedIDs[attacker] && g_iGameTimes[attacker] >= diffTime)
+	if (client != g_iAttackerIDs[attacker] && attacker == g_iDamagedIDs[attacker] && g_iGameTimes[attacker] >= diffTime)
 	{
 		for (int admin = 1; admin <= MaxClients; admin++)
 		{
