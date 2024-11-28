@@ -4,7 +4,7 @@
 #define _boostalert_included
 
 /**
- * Called right after an Human boosted a Zombie
+ * Called right after a player gets boosted
  *
  * @param attacker       Attacker UserId
  * @param victim         Victim UserId
@@ -15,7 +15,7 @@
 forward void BoostAlert_OnBoost(int attacker, int victim, int damage, const char[] sWeapon);
 
 /**
- * Called right after an Human get killed by a boosted Zombie
+ * Called right after someone gets killed by a boosted player
  *
  * @param attacker          Attacker UserId
  * @param victim            Victim UserId
