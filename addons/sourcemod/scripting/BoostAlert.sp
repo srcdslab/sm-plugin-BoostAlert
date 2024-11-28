@@ -1,6 +1,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
+#include <cstrike>
 #include <sdktools>
 #include <sourcemod>
 #include <multicolors>
@@ -9,7 +10,7 @@
 bool g_Plugin_ZR = false;
 bool g_bPlugin_KnifeMode = false;
 
-ConVar g_cvNotificationTime, g_cvKnifeModMsgs;
+ConVar g_cvNotificationTime, g_cvKnifeModMsgs, g_cvMinKnifeDamage;
 ConVar g_cvBoostHitGroup, g_cvBoostSpam, g_cvBoostDelay;
 ConVar g_cvMinimumDamage;
 ConVar g_cvAuthID;
@@ -47,6 +48,7 @@ public void OnPluginStart()
 	// Knife Alert
 	g_cvNotificationTime = CreateConVar("sm_knifenotifytime", "5", "Time before a knifed zombie is considered \"not knifed\"", 0, true, 0.0, true, 60.0);
 	g_cvKnifeModMsgs = CreateConVar("sm_knifemod_blocked", "1", "Block Alert messages when KnifeMode library is detected [0 = Print Alert | 1 = Block Alert]");
+	g_cvMinKnifeDamage = CreateConVar("sm_knifemin_damage", "15", "Minimum damage needed for knife warning.");
 
 	// Boost Alert
 	g_cvBoostHitGroup = CreateConVar("sm_boostalert_hitgroup", "1", "0 = Detect the whole body, 1 = Headshot only.");
@@ -101,12 +103,12 @@ public Action Event_PlayerHurt(Handle hEvent, const char[] name, bool dontBroadc
 	int iVictimTeam = GetClientTeam(victim);
 	int iAttackerTeam = GetClientTeam(attacker);
 
-	if (iVictimTeam == 2 && iAttackerTeam == 3)
+	if (iVictimTeam == CS_TEAM_T && iAttackerTeam == CS_TEAM_CT)
 	{
 		if (g_bPlugin_KnifeMode && g_cvKnifeModMsgs.IntValue > 0)
 			return Plugin_Continue;
 
-		if (StrEqual(sWepName, "knife") && iDamage >= 15)
+		if (StrEqual(sWepName, "knife") && iDamage >= g_cvMinKnifeDamage.IntValue)
 			HandleKnifeAlert(victim, attacker, iDamage);
 
 		int hitgroup = GetEventInt(hEvent, "hitgroup");
@@ -120,7 +122,7 @@ public Action Event_PlayerHurt(Handle hEvent, const char[] name, bool dontBroadc
 		return Plugin_Continue;
 	}
 
-	if (iVictimTeam == 3 && iAttackerTeam == 2)
+	if (iVictimTeam == CS_TEAM_CT && iAttackerTeam == CS_TEAM_T)
 	{
 		HandleKnifedZombieInfection(victim, attacker, iDamage);
 		return Plugin_Continue;
