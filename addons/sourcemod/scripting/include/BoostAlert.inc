@@ -4,44 +4,27 @@
 #define _boostalert_included
 
 /**
- * Called right after an Human knife a Zombie
+ * Called right after an Human boosted a Zombie
  *
  * @param attacker       Attacker UserId
  * @param victim         Victim UserId
- * @param damage         Damage made by attacker to victim.
+ * @param damage         Damage made by attacker to the victim
  * @param sWeapon        Weapon used to kill
  * @noreturn
  */
-forward void BoostAlert_OnAlert(int attacker, int victim, int damage, char[] sWeapon);
+forward void BoostAlert_OnBoost(int attacker, int victim, int damage, const char[] sWeapon);
 
 /**
- * Called right after an Human knife a Zombie
+ * Called right after an Human get killed by a boosted Zombie
  *
  * @param attacker          Attacker UserId
- * @param Auth_attacker     Attacker SteamID  
  * @param victim            Victim UserId
- * @param Auth_victim    	Victim SteamID  
- * @param pOldKnifer        Initial knifer UserId
- * @param Auth_OldKnifer    Initial knifer SteamID
- * @param damage            Damage made by attacker to victim.
+ * @param iInitialAttacker  Initial booster UserId
+ * @param damage            Damage made by attacker to the victim
  * @param sWeapon           Weapon used to kill
  * @noreturn
  */
-forward void BoostAlert_OnKill(int attacker, char[] Auth_attacker, int victim, char[] Auth_victim, int pOldKnifer, char[] Auth_OldKnifer, int damage, char[] sWeapon);
-
-/**
- * Called right after an Human knife a Zombie
- *
- * @param attacker          Attacker UserId
- * @param Auth_attacker     Attacker SteamID  
- * @param victim            Victim UserId
- * @param Auth_victim    	Victim SteamID
- * @param Auth_OldKnifer    Initial knifer SteamID
- * @param damage            Damage made by attacker to victim.
- * @param sWeapon           Weapon used to kill
- * @noreturn
- */
-forward void BoostAlert_OnKillDisconnect(int attacker, char[] Auth_attacker, int victim, char[] Auth_victim, char[] Auth_OldKnifer, int damage, char[] sWeapon);
+forward void BoostAlert_OnBoostedKill(int attacker, int victim, int iInitialAttacker, int damage, char[] sWeapon);
 
 public SharedPlugin __pl_boostalert =
 {
