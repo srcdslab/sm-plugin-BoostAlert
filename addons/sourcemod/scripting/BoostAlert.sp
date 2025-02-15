@@ -30,7 +30,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, Obus + BotoX, maxime1907, .Rushaway",
-	version			= "2.0.0",
+	version			= "2.0.1",
 	url				= "https://github.com/srcdslab/sm-plugin-BoostAlert"
 };
 
@@ -76,7 +76,7 @@ public void OnLibraryAdded(const char[] sName)
 {
 	if (StrEqual(sName, "KnifeMode"))
 		g_bPlugin_KnifeMode = true;
-	if (StrEqual(sName, "zombiereloaded"))
+	else if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = true;
 }
 
@@ -84,7 +84,7 @@ public void OnLibraryRemoved(const char[] sName)
 {
 	if (StrEqual(sName, "KnifeMode"))
 		g_bPlugin_KnifeMode = false;
-	if (StrEqual(sName, "zombiereloaded"))
+	else if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = false;
 }
 
