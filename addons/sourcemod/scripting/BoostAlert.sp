@@ -10,6 +10,10 @@
 bool g_Plugin_ZR = false;
 bool g_bPlugin_KnifeMode = false;
 
+#undef REQUIRE_PLUGIN
+#tryinclude <knifemode>
+#define REQUIRE_PLUGIN
+
 ConVar g_cvNotificationTime, g_cvKnifeModMsgs, g_cvMinKnifeDamage;
 ConVar g_cvBoostHitGroup, g_cvBoostSpam, g_cvBoostDelay;
 ConVar g_cvMinimumDamage;
@@ -30,7 +34,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, Obus + BotoX, maxime1907, .Rushaway",
-	version			= "2.0.1",
+	version			= "2.1.0",
 	url				= "https://github.com/srcdslab/sm-plugin-BoostAlert"
 };
 
@@ -69,22 +73,17 @@ public void OnPluginStart()
 public void OnAllPluginsLoaded()
 {
 	g_Plugin_ZR = LibraryExists("zombiereloaded");
-	g_bPlugin_KnifeMode = LibraryExists("KnifeMode");
 }
 
 public void OnLibraryAdded(const char[] sName)
 {
-	if (StrEqual(sName, "KnifeMode"))
-		g_bPlugin_KnifeMode = true;
-	else if (StrEqual(sName, "zombiereloaded"))
+	if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = true;
 }
 
 public void OnLibraryRemoved(const char[] sName)
 {
-	if (StrEqual(sName, "KnifeMode"))
-		g_bPlugin_KnifeMode = false;
-	else if (StrEqual(sName, "zombiereloaded"))
+	if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = false;
 }
 
@@ -315,3 +314,10 @@ void Forward_OnBoostedKill(int attacker, int victim, int iInitialAttacker, int d
 	Call_PushString(sWeapon);
 	Call_Finish();
 }
+
+#if defined _KnifeMode_Included
+public void KnifeMode_OnToggle(bool bEnabled)
+{
+	g_bPlugin_KnifeMode = bEnabled;
+}
+#endif
