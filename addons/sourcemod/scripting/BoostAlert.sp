@@ -34,7 +34,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, Obus + BotoX, maxime1907, .Rushaway",
-	version			= "2.1.0",
+	version			= "2.1.1",
 	url				= "https://github.com/srcdslab/sm-plugin-BoostAlert"
 };
 
@@ -90,9 +90,12 @@ public void OnLibraryRemoved(const char[] sName)
 public Action Event_PlayerHurt(Handle hEvent, const char[] name, bool dontBroadcast)
 {
 	int victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 
-	if (!IsValidClient(victim) || !IsValidClient(attacker) || victim == attacker)
+	if (!IsValidClient(victim))
+		return Plugin_Continue;
+
+	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+	if (!IsValidClient(attacker) || victim == attacker)
 		return Plugin_Continue;
 
 	char sWepName[64];
@@ -135,8 +138,7 @@ bool IsBoostWeapon(const char[] weapon)
 {
 	return (StrEqual(weapon, "m3") || StrEqual(weapon, "xm1014") // CS:S Shotguns
 		|| StrEqual(weapon, "awp") || StrEqual(weapon, "scout") // Snipers
-		|| StrEqual(weapon, "sg550") || StrEqual(weapon, "g3sg1") // Semi-Auto Snipers
-		|| StrEqual(weapon, "deagle")); // Pistols
+		|| StrEqual(weapon, "sg550") || StrEqual(weapon, "g3sg1")); // Semi-Auto Snipers
 }
 
 void HandleKnifeAlert(int victim, int attacker, int damage)
