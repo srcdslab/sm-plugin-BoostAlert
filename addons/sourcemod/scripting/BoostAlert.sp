@@ -208,10 +208,7 @@ void HandleBoostAlert(int victim, int attacker, const char[] weapon, int damage)
 		BuildUserIdString(victim, sVictimId, sizeof(sVictimId));
 		NotifyBoostEvent(attacker, sAttackerId, victim, sVictimId, weapon, damage);
 
-		char sMessage[1024];
-		Format(sMessage, sizeof(sMessage), "%L Boosted %L (%s)", attacker, victim, weapon);
-		LogMessage(sMessage);
-
+		LogMessage("%L %s %L with %s (-%d HP)", attacker, g_Plugin_ZR ? "infected" : "killed", victim, weapon, damage);
 		Forward_OnBoost(attacker, victim, damage, weapon);
 	}
 }
@@ -248,7 +245,7 @@ public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, boo
 			NotifyBoostInfectionEvent(g_iDamagedIDs[attacker], sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
 
 			Forward_OnBoostedKill(g_iDamagedIDs[attacker], client, g_iAttackerIDs[attacker], 1, "zombie_claws_of_death");
-			LogMessage("[BA] %L %s (%s) infected %L (%s), boosted by %L (%s)", g_iDamagedIDs[attacker], g_Plugin_ZR ? "infected" : "killed", sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
+			LogMessage("%L %s (%s) infected %L (%s), boosted by %L (%s)", g_iDamagedIDs[attacker], g_Plugin_ZR ? "infected" : "killed", sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
 		}
 	}
 
@@ -281,8 +278,6 @@ void NotifyBoostEvent(int attacker, const char[] attackerId, int victim, const c
 		CPrintToChat(i, "%t", "BA_Chat_Boost", BA_TAG, attacker, victim, weapon, damage);
 		PrintToConsole(i, "%T", "BA_Console_Boost", i, BA_TAG, attacker, attackerId, victim, victimId, weapon, damage);
 	}
-
-	PrintToServer("%T", "BA_Console_Boost", 0, BA_TAG, attacker, attackerId, victim, victimId, weapon, damage);
 }
 
 void NotifyKnifeFollowupConnected(int attacker, const char[] attackerId, int victim, const char[] victimId, int oldKnifer, const char[] oldKniferId, bool isInfection)
