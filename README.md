@@ -105,4 +105,4 @@ Supported language keys:
 
 - Boost detection weapon list is currently: `m3`, `xm1014`, `awp`, `scout`, `sg550`, `g3sg1`.
 - Admin notification target is: SourceTV or users with `Admin_Generic`.
-- config is Auto generated.
+- Config is auto-generated.
