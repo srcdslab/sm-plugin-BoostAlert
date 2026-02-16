@@ -1,0 +1,142 @@
+"Phrases"
+{
+    "BA_Chat_Knife"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:d}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}knifed {lightcoral}{3} {grey}(-{4} HP)"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a knife {lightcoral}{3} {grey}(-{4} HP)"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}acuchilló a {lightcoral}{3} {grey}(-{4} HP)"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}ударил ножом {lightcoral}{3} {grey}(-{4} HP)"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}刀了 {lightcoral}{3} {grey}(-{4} HP)"
+    }
+
+    "BA_Console_Knife"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:d}"
+        "en"    "{1} {2} ({3}) knifed {4} ({5}) (-{6} HP)"
+        "fr"    "{1} {2} ({3}) a knife {4} ({5}) (-{6} HP)"
+        "es"    "{1} {2} ({3}) acuchilló a {4} ({5}) (-{6} HP)"
+        "ru"    "{1} {2} ({3}) ударил ножом {4} ({5}) (-{6} HP)"
+        "chi"   "{1} {2} ({3}) 刀了 {4} ({5}) (-{6} HP)"
+    }
+
+    "BA_Chat_Boost"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:s},{5:d}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}boosted {lightcoral}{3} {grey}({4}, -{5} HP)"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a boost {lightcoral}{3} {grey}({4}, -{5} HP)"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}hizo boost a {lightcoral}{3} {grey}({4}, -{5} HP)"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}сделал буст по {lightcoral}{3} {grey}({4}, -{5} HP)"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}boost 了 {lightcoral}{3} {grey}({4}, -{5} HP)"
+    }
+
+    "BA_Console_Boost"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:s},{7:d}"
+        "en"    "{1} {2} ({3}) boosted {4} ({5}) with {6} (-{7} HP)"
+        "fr"    "{1} {2} ({3}) a boost {4} ({5}) avec {6} (-{7} HP)"
+        "es"    "{1} {2} ({3}) hizo boost a {4} ({5}) con {6} (-{7} HP)"
+        "ru"    "{1} {2} ({3}) сделал буст по {4} ({5}) из {6} (-{7} HP)"
+        "chi"   "{1} {2} ({3}) 用 {6} boost 了 {4} ({5}) (-{7} HP)"
+    }
+
+    "BA_Chat_Knife_Followup_Infect"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:N}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}infected {lightcoral}{3} {grey}(Recently knifed by {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecte {lightcoral}{3} {grey}(Recemment knife par {deepskyblue}{4}{grey})"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}infectó a {lightcoral}{3} {grey}(Acuchillado recientemente por {deepskyblue}{4}{grey})"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}заразил {lightcoral}{3} {grey}(Недавно был ударен ножом: {deepskyblue}{4}{grey})"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}感染了 {lightcoral}{3} {grey}(最近被 {deepskyblue}{4}{grey} 刀过)"
+    }
+
+    "BA_Chat_Knife_Followup_Kill"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:N}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}killed {lightcoral}{3} {grey}(Recently knifed by {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a tue {lightcoral}{3} {grey}(Recemment knife par {deepskyblue}{4}{grey})"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}mató a {lightcoral}{3} {grey}(Acuchillado recientemente por {deepskyblue}{4}{grey})"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}убил {lightcoral}{3} {grey}(Недавно был ударен ножом: {deepskyblue}{4}{grey})"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}击杀了 {lightcoral}{3} {grey}(最近被 {deepskyblue}{4}{grey} 刀过)"
+    }
+
+    "BA_Chat_Knife_Followup_Infect_Disconnected"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:s}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}infected {lightcoral}{3} {grey}(Recently knifed by a disconnected player: {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecte {lightcoral}{3} {grey}(Recemment knife par un joueur deconnecte: {deepskyblue}{4}{grey})"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}infectó a {lightcoral}{3} {grey}(Acuchillado recientemente por un jugador desconectado: {deepskyblue}{4}{grey})"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}заразил {lightcoral}{3} {grey}(Недавно был ударен ножом отключившимся игроком: {deepskyblue}{4}{grey})"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}感染了 {lightcoral}{3} {grey}(最近被已离线玩家刀过: {deepskyblue}{4}{grey})"
+    }
+
+    "BA_Chat_Knife_Followup_Kill_Disconnected"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:s}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}killed {lightcoral}{3} {grey}(Recently knifed by a disconnected player: {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a tue {lightcoral}{3} {grey}(Recemment knife par un joueur deconnecte: {deepskyblue}{4}{grey})"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}mató a {lightcoral}{3} {grey}(Acuchillado recientemente por un jugador desconectado: {deepskyblue}{4}{grey})"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}убил {lightcoral}{3} {grey}(Недавно был ударен ножом отключившимся игроком: {deepskyblue}{4}{grey})"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}击杀了 {lightcoral}{3} {grey}(最近被已离线玩家刀过: {deepskyblue}{4}{grey})"
+    }
+
+    "BA_Console_Knife_Followup_Infect"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:N},{7:s}"
+        "en"    "{1} {2} ({3}) infected {4} ({5}) (Recently knifed by {6} ({7}))"
+        "fr"    "{1} {2} ({3}) a infecte {4} ({5}) (Recemment knife par {6} ({7}))"
+        "es"    "{1} {2} ({3}) infectó a {4} ({5}) (Acuchillado recientemente por {6} ({7}))"
+        "ru"    "{1} {2} ({3}) заразил {4} ({5}) (Недавно был ударен ножом: {6} ({7}))"
+        "chi"   "{1} {2} ({3}) 感染了 {4} ({5})（最近被 {6} ({7}) 刀过）"
+    }
+
+    "BA_Console_Knife_Followup_Kill"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:N},{7:s}"
+        "en"    "{1} {2} ({3}) killed {4} ({5}) (Recently knifed by {6} ({7}))"
+        "fr"    "{1} {2} ({3}) a tue {4} ({5}) (Recemment knife par {6} ({7}))"
+        "es"    "{1} {2} ({3}) mató a {4} ({5}) (Acuchillado recientemente por {6} ({7}))"
+        "ru"    "{1} {2} ({3}) убил {4} ({5}) (Недавно был ударен ножом: {6} ({7}))"
+        "chi"   "{1} {2} ({3}) 击杀了 {4} ({5})（最近被 {6} ({7}) 刀过）"
+    }
+
+    "BA_Console_Knife_Followup_Infect_Disconnected"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:s}"
+        "en"    "{1} {2} ({3}) infected {4} ({5}) (Recently knifed by a disconnected player: {6})"
+        "fr"    "{1} {2} ({3}) a infecte {4} ({5}) (Recemment knife par un joueur deconnecte: {6})"
+        "es"    "{1} {2} ({3}) infectó a {4} ({5}) (Acuchillado recientemente por un jugador desconectado: {6})"
+        "ru"    "{1} {2} ({3}) заразил {4} ({5}) (Недавно был ударен ножом отключившимся игроком: {6})"
+        "chi"   "{1} {2} ({3}) 感染了 {4} ({5})（最近被已离线玩家刀过：{6}）"
+    }
+
+    "BA_Console_Knife_Followup_Kill_Disconnected"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:s}"
+        "en"    "{1} {2} ({3}) killed {4} ({5}) (Recently knifed by a disconnected player: {6})"
+        "fr"    "{1} {2} ({3}) a tue {4} ({5}) (Recemment knife par un joueur deconnecte: {6})"
+        "es"    "{1} {2} ({3}) mató a {4} ({5}) (Acuchillado recientemente por un jugador desconectado: {6})"
+        "ru"    "{1} {2} ({3}) убил {4} ({5}) (Недавно был ударен ножом отключившимся игроком: {6})"
+        "chi"   "{1} {2} ({3}) 击杀了 {4} ({5})（最近被已离线玩家刀过：{6}）"
+    }
+
+    "BA_Chat_Boost_Infection"
+    {
+        "#format"    "{1:s},{2:N},{3:N},{4:N}"
+        "en"    "{gold}{1} {deepskyblue}{2} {default}infected {lightcoral}{3} {grey}(boosted by {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecte {lightcoral}{3} {grey}(boost par {deepskyblue}{4}{grey})"
+        "es"    "{gold}{1} {deepskyblue}{2} {default}infectó a {lightcoral}{3} {grey}(boost por {deepskyblue}{4}{grey})"
+        "ru"    "{gold}{1} {deepskyblue}{2} {default}заразил {lightcoral}{3} {grey}(буст от {deepskyblue}{4}{grey})"
+        "chi"   "{gold}{1} {deepskyblue}{2} {default}感染了 {lightcoral}{3} {grey}(boost 来自 {deepskyblue}{4}{grey})"
+    }
+
+    "BA_Console_Boost_Infection"
+    {
+        "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:N},{7:s}"
+        "en"    "{1} {2} ({3}) infected {4} ({5}), boosted by {6} ({7})"
+        "fr"    "{1} {2} ({3}) a infecte {4} ({5}), boost par {6} ({7})"
+        "es"    "{1} {2} ({3}) infectó a {4} ({5}), boost por {6} ({7})"
+        "ru"    "{1} {2} ({3}) заразил {4} ({5}), буст от {6} ({7})"
+        "chi"   "{1} {2} ({3}) 感染了 {4} ({5})，由 {6} ({7}) 使用 boost"
+    }
+}

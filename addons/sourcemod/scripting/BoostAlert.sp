@@ -7,6 +7,8 @@
 #include <multicolors>
 #include <zombiereloaded>
 
+#define BA_TAG "[BA]"
+
 bool g_Plugin_ZR = false;
 bool g_bPlugin_KnifeMode = false;
 
@@ -34,7 +36,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, Obus + BotoX, maxime1907, .Rushaway",
-	version			= "2.1.0",
+	version			= "3.0.0",
 	url				= "https://github.com/srcdslab/sm-plugin-BoostAlert"
 };
 
@@ -49,6 +51,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
+	LoadTranslations("BoostAlert.phrases");
+
 	// Knife Alert
 	g_cvNotificationTime = CreateConVar("sm_knifenotifytime", "5", "Time before a knifed zombie is considered \"not knifed\"", 0, true, 0.0, true, 60.0);
 	g_cvKnifeModMsgs = CreateConVar("sm_knifemod_blocked", "1", "Block Alert messages when KnifeMode library is detected [0 = Print Alert | 1 = Block Alert]");
@@ -90,9 +94,12 @@ public void OnLibraryRemoved(const char[] sName)
 public Action Event_PlayerHurt(Handle hEvent, const char[] name, bool dontBroadcast)
 {
 	int victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
-	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
 
-	if (!IsValidClient(victim) || !IsValidClient(attacker) || victim == attacker)
+	if (!IsValidClient(victim))
+		return Plugin_Continue;
+
+	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+	if (!IsValidClient(attacker) || victim == attacker)
 		return Plugin_Continue;
 
 	char sWepName[64];
@@ -135,8 +142,7 @@ bool IsBoostWeapon(const char[] weapon)
 {
 	return (StrEqual(weapon, "m3") || StrEqual(weapon, "xm1014") // CS:S Shotguns
 		|| StrEqual(weapon, "awp") || StrEqual(weapon, "scout") // Snipers
-		|| StrEqual(weapon, "sg550") || StrEqual(weapon, "g3sg1") // Semi-Auto Snipers
-		|| StrEqual(weapon, "deagle")); // Pistols
+		|| StrEqual(weapon, "sg550") || StrEqual(weapon, "g3sg1")); // Semi-Auto Snipers
 }
 
 void HandleKnifeAlert(int victim, int attacker, int damage)
@@ -144,11 +150,12 @@ void HandleKnifeAlert(int victim, int attacker, int damage)
 	g_iClientUserId[victim] = GetClientUserId(attacker);
 	g_iNotificationTime[victim] = (GetTime() + g_cvNotificationTime.IntValue);
 
-	char sMessage[1024];
-	Format(sMessage, sizeof(sMessage), "%L Knifed %L", attacker, victim);
-	LogMessage(sMessage);
+	LogMessage("%L Knifed %L (-%d HP)", attacker, victim, damage);
 
-	NotifyAdmins("{green}[SM] {blue}%N {default}knifed {red}%N{default}. (-%d HP)", attacker, victim, damage);
+	char sAttackerId[64], sVictimId[64];
+	BuildUserIdString(attacker, sAttackerId, sizeof(sAttackerId));
+	BuildUserIdString(victim, sVictimId, sizeof(sVictimId));
+	NotifyKnifeEvent(attacker, sAttackerId, victim, sVictimId, damage);
 	Forward_OnBoost(attacker, victim, damage, "knife");
 }
 
@@ -159,43 +166,26 @@ void HandleKnifedZombieInfection(int victim, int attacker, int damage)
 		int pOldKnifer = GetClientOfUserId(g_iClientUserId[attacker]);
 		if (victim != pOldKnifer)
 		{
-			AuthIdType authType = view_as<AuthIdType>(GetConVarInt(g_cvAuthID));
-
-			char sMessage[1024], sAtkSID[64], OldKniferSteamID[64];
-			GetClientAuthId(attacker, authType, sAtkSID, sizeof(sAtkSID));
-			GetClientAuthId(pOldKnifer, authType, OldKniferSteamID, sizeof(OldKniferSteamID));
-
-			if (authType == AuthId_Steam3)
-			{
-				ReplaceString(sAtkSID, sizeof(sAtkSID), "[", "");
-				ReplaceString(sAtkSID, sizeof(sAtkSID), "]", "");
-				ReplaceString(OldKniferSteamID, sizeof(OldKniferSteamID), "[", "");
-				ReplaceString(OldKniferSteamID, sizeof(OldKniferSteamID), "]", "");
-			}
-
-			Format(sAtkSID, sizeof(sAtkSID), "#%d|%s", GetClientUserId(attacker), sAtkSID);
+			char sAtkSID[64], sVictimId[64];
+			BuildUserIdString(attacker, sAtkSID, sizeof(sAtkSID));
+			BuildUserIdString(victim, sVictimId, sizeof(sVictimId));
 
 			if (pOldKnifer != -1)
 			{
-				char sAtkAttackerName[MAX_NAME_LENGTH];
-				GetClientName(pOldKnifer, sAtkAttackerName, sizeof(sAtkAttackerName));
+				char sOldKniferId[64];
+				BuildUserIdString(pOldKnifer, sOldKniferId, sizeof(sOldKniferId));
+				LogMessage("%L %s %L (Recently knifed by %L)", attacker, g_Plugin_ZR ? "infected" : "killed", victim, pOldKnifer);
 
-				Format(sMessage, sizeof(sMessage), "%L %s %L (Recently knifed by %L)", attacker, g_Plugin_ZR ? "infected" : "killed", victim, pOldKnifer);
-				LogMessage(sMessage);
-
-				CPrintToChatAll("{green}[SM]{red} %N ({lightgreen}%s{red}){default} %s{blue} %N{default}.", attacker, sAtkSID, g_Plugin_ZR ? "infected" : "killed", victim);
-				CPrintToChatAll("{green}[SM]{default} Knifed by{blue} %s{default}.", sAtkAttackerName);
-
+				NotifyKnifeFollowupConnected(attacker, sAtkSID, victim, sVictimId, pOldKnifer, sOldKniferId, g_Plugin_ZR);
 				Forward_OnBoostedKill(attacker, victim, pOldKnifer, damage, "knife");
 			}
 			else
 			{
-				Format(sMessage, sizeof(sMessage), "%L %s %L (Recently knifed by a disconnected player %s)", attacker, g_Plugin_ZR ? "infected" : "killed", victim, OldKniferSteamID);
-				LogMessage(sMessage);
+				char sOldKniferSteamID[64];
+				BuildStoredUserIdString(g_iClientUserId[attacker], sOldKniferSteamID, sizeof(sOldKniferSteamID));
+				LogMessage("%L %s %L (Recently knifed by a disconnected player %s)", attacker, g_Plugin_ZR ? "infected" : "killed", victim, sOldKniferSteamID);
 
-				CPrintToChatAll("{green}[SM]{red} %N ({lightgreen}%s{red}){green} %s{blue} %N{default}.", attacker, sAtkSID, g_Plugin_ZR ? "infected" : "killed", victim);
-				CPrintToChatAll("{green}[SM]{default} Knifed by a disconnected player. {lightgreen}%s", OldKniferSteamID);
-
+				NotifyKnifeFollowupDisconnected(attacker, sAtkSID, victim, sVictimId, sOldKniferSteamID, g_Plugin_ZR);
 				Forward_OnBoostedKill(attacker, victim, -1, damage, "knife");
 			}
 		}
@@ -212,7 +202,11 @@ void HandleBoostAlert(int victim, int attacker, const char[] weapon, int damage)
 	if (time - g_cvBoostSpam.IntValue >= g_iGameTimeSpam[victim])
 	{
 		g_iGameTimeSpam[victim] = time;
-		NotifyAdmins("{green}[SM] {blue}%N {default}boosted {red}%N{default}. ({olive}%s{default})", attacker, victim, weapon);
+
+		char sAttackerId[64], sVictimId[64];
+		BuildUserIdString(attacker, sAttackerId, sizeof(sAttackerId));
+		BuildUserIdString(victim, sVictimId, sizeof(sVictimId));
+		NotifyBoostEvent(attacker, sAttackerId, victim, sVictimId, weapon, damage);
 
 		char sMessage[1024];
 		Format(sMessage, sizeof(sMessage), "%L Boosted %L (%s)", attacker, victim, weapon);
@@ -242,48 +236,129 @@ public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, boo
 		return;
 
 	int time = GetTime();
-	if (client != g_iAttackerIDs[attacker] && attacker == g_iDamagedIDs[attacker] 
-		&& g_iGameTimes[attacker] >= (time - g_cvBoostDelay.IntValue))
+	if (client != g_iAttackerIDs[attacker] && attacker == g_iDamagedIDs[attacker] && g_iGameTimes[attacker] >= (time - g_cvBoostDelay.IntValue))
 	{
 		if (IsValidClient(g_iAttackerIDs[attacker]) && IsValidClient(g_iDamagedIDs[attacker]))
 		{
-			AuthIdType authType = view_as<AuthIdType>(GetConVarInt(g_cvAuthID));
+			char sAttackerSteamID[64], sBoosterSteamID[64], sVictimId[64];
+			BuildUserIdString(g_iDamagedIDs[attacker], sAttackerSteamID, sizeof(sAttackerSteamID));
+			BuildUserIdString(g_iAttackerIDs[attacker], sBoosterSteamID, sizeof(sBoosterSteamID));
+			BuildUserIdString(client, sVictimId, sizeof(sVictimId));
 
-			char sAttackerSteamID[64], sBoosterSteamID[64];
-			GetClientAuthId(g_iDamagedIDs[attacker], authType, sAttackerSteamID, sizeof(sAttackerSteamID));
-			GetClientAuthId(g_iAttackerIDs[attacker], authType, sBoosterSteamID, sizeof(sBoosterSteamID));
-
-			if (authType == AuthId_Steam3)
-			{
-				ReplaceString(sAttackerSteamID, sizeof(sAttackerSteamID), "[", "");
-				ReplaceString(sAttackerSteamID, sizeof(sAttackerSteamID), "]", "");
-				ReplaceString(sBoosterSteamID, sizeof(sBoosterSteamID), "[", "");
-				ReplaceString(sBoosterSteamID, sizeof(sBoosterSteamID), "]", "");
-			}
-
-			Format(sAttackerSteamID, sizeof(sAttackerSteamID), "#%d|%s", GetClientUserId(g_iDamagedIDs[attacker]), sAttackerSteamID);
-			Format(sBoosterSteamID, sizeof(sBoosterSteamID), "#%d|%s", GetClientUserId(g_iAttackerIDs[attacker]), sBoosterSteamID);
-
-			NotifyAdmins("{green}[SM] {red}%N ({lightgreen}%s{red}) {default}infected {red}%N{default}, boosted by {blue}%N ({lightgreen}%s{blue}){default}.",
-				g_iDamagedIDs[attacker], sAttackerSteamID, client, g_iAttackerIDs[attacker], sBoosterSteamID);
+			NotifyBoostInfectionEvent(g_iDamagedIDs[attacker], sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
 
 			Forward_OnBoostedKill(g_iDamagedIDs[attacker], client, g_iAttackerIDs[attacker], 1, "zombie_claws_of_death");
 		}
 	}
+
+	LogMessage("[BA] %L %s (%s) infected %L (%s), boosted by %L (%s)", g_iDamagedIDs[attacker], g_Plugin_ZR ? "infected" : "killed", sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
 }
 
-void NotifyAdmins(const char[] format, any ...)
+bool ShouldNotifyClient(int client)
 {
-	char buffer[512];
-	VFormat(buffer, sizeof(buffer), format, 2);
+	return IsValidClient(client) && (IsClientSourceTV(client) || GetAdminFlag(GetUserAdmin(client), Admin_Generic));
+}
+
+void NotifyKnifeEvent(int attacker, const char[] attackerId, int victim, const char[] victimId, int damage)
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (!ShouldNotifyClient(i))
+			continue;
+
+		CPrintToChat(i, "%t", "BA_Chat_Knife", BA_TAG, attacker, victim, damage);
+		PrintToConsole(i, "%T", "BA_Console_Knife", i, BA_TAG, attacker, attackerId, victim, victimId, damage);
+	}
+}
+
+void NotifyBoostEvent(int attacker, const char[] attackerId, int victim, const char[] victimId, const char[] weapon, int damage)
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (!ShouldNotifyClient(i))
+			continue;
+
+		CPrintToChat(i, "%t", "BA_Chat_Boost", BA_TAG, attacker, victim, weapon, damage);
+		PrintToConsole(i, "%T", "BA_Console_Boost", i, BA_TAG, attacker, attackerId, victim, victimId, weapon, damage);
+	}
+
+	PrintToServer("%T", "BA_Console_Boost", 0, BA_TAG, attacker, attackerId, victim, victimId, weapon, damage);
+}
+
+void NotifyKnifeFollowupConnected(int attacker, const char[] attackerId, int victim, const char[] victimId, int oldKnifer, const char[] oldKniferId, bool isInfection)
+{
+	char chatKey[48], consoleKey[40];
+	strcopy(chatKey, sizeof(chatKey), isInfection ? "BA_Chat_Knife_Followup_Infect" : "BA_Chat_Knife_Followup_Kill");
+	strcopy(consoleKey, sizeof(consoleKey), isInfection ? "BA_Console_Knife_Followup_Infect" : "BA_Console_Knife_Followup_Kill");
 
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if (IsValidClient(i) && (IsClientSourceTV(i) || GetAdminFlag(GetUserAdmin(i), Admin_Generic)))
-		{
-			CPrintToChat(i, buffer);
-		}
+		if (!ShouldNotifyClient(i))
+			continue;
+
+		CPrintToChat(i, "%t", chatKey, BA_TAG, attacker, victim, oldKnifer);
+		PrintToConsole(i, "%T", consoleKey, i, BA_TAG, attacker, attackerId, victim, victimId, oldKnifer, oldKniferId);
 	}
+}
+
+void NotifyKnifeFollowupDisconnected(int attacker, const char[] attackerId, int victim, const char[] victimId, const char[] oldKniferId, bool isInfection)
+{
+	char chatKey[61], consoleKey[43];
+	strcopy(chatKey, sizeof(chatKey), isInfection ? "BA_Chat_Knife_Followup_Infect_Disconnected" : "BA_Chat_Knife_Followup_Kill_Disconnected");
+	strcopy(consoleKey, sizeof(consoleKey), isInfection ? "BA_Console_Knife_Followup_Infect_Disconnected" : "BA_Console_Knife_Followup_Kill_Disconnected");
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (!ShouldNotifyClient(i))
+			continue;
+
+		CPrintToChat(i, "%t", chatKey, BA_TAG, attacker, victim, oldKniferId);
+		PrintToConsole(i, "%T", consoleKey, i, BA_TAG, attacker, attackerId, victim, victimId, oldKniferId);
+	}
+}
+
+void NotifyBoostInfectionEvent(int attacker, const char[] attackerId, int victim, const char[] victimId, int booster, const char[] boosterId)
+{
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (!ShouldNotifyClient(i))
+			continue;
+
+		CPrintToChat(i, "%t", "BA_Chat_Boost_Infection", BA_TAG, attacker, victim, booster);
+		PrintToConsole(i, "%T", "BA_Console_Boost_Infection", i, BA_TAG, attacker, attackerId, victim, victimId, booster, boosterId);
+	}
+}
+
+void BuildUserIdString(int client, char[] buffer, int maxlen)
+{
+	AuthIdType authType = view_as<AuthIdType>(g_cvAuthID.IntValue);
+	GetClientAuthId(client, authType, buffer, maxlen, false);
+
+	if (authType == AuthId_Steam3)
+	{
+		ReplaceString(buffer, maxlen, "[", "");
+		ReplaceString(buffer, maxlen, "]", "");
+	}
+
+	Format(buffer, maxlen, "#%d|%s", GetClientUserId(client), buffer);
+}
+
+void BuildStoredUserIdString(int userId, char[] buffer, int maxlen)
+{
+	if (userId <= 0)
+	{
+		strcopy(buffer, maxlen, "unknown");
+		return;
+	}
+
+	int client = GetClientOfUserId(userId);
+	if (IsValidClient(client))
+	{
+		BuildUserIdString(client, buffer, maxlen);
+		return;
+	}
+
+	Format(buffer, maxlen, "#%d|disconnected", userId);
 }
 
 stock bool IsValidClient(int client)
