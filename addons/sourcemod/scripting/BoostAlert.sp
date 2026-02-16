@@ -208,7 +208,7 @@ void HandleBoostAlert(int victim, int attacker, const char[] weapon, int damage)
 		BuildUserIdString(victim, sVictimId, sizeof(sVictimId));
 		NotifyBoostEvent(attacker, sAttackerId, victim, sVictimId, weapon, damage);
 
-		LogMessage("%L %s %L with %s (-%d HP)", attacker, g_Plugin_ZR ? "infected" : "killed", victim, weapon, damage);
+		LogMessage("%L boosted %L with %s (-%d HP)", attacker, victim, weapon, damage);
 		Forward_OnBoost(attacker, victim, damage, weapon);
 	}
 }
