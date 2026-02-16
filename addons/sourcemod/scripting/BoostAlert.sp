@@ -298,7 +298,7 @@ void NotifyKnifeFollowupConnected(int attacker, const char[] attackerId, int vic
 
 void NotifyKnifeFollowupDisconnected(int attacker, const char[] attackerId, int victim, const char[] victimId, const char[] oldKniferId, bool isInfection)
 {
-	char chatKey[61], consoleKey[43];
+	char chatKey[61], consoleKey[47];
 	strcopy(chatKey, sizeof(chatKey), isInfection ? "BA_Chat_Knife_Followup_Infect_Disconnected" : "BA_Chat_Knife_Followup_Kill_Disconnected");
 	strcopy(consoleKey, sizeof(consoleKey), isInfection ? "BA_Console_Knife_Followup_Infect_Disconnected" : "BA_Console_Knife_Followup_Kill_Disconnected");
 
