@@ -44,7 +44,7 @@
     {
         "#format"    "{1:s},{2:N},{3:N},{4:N}"
         "en"    "{gold}{1} {deepskyblue}{2} {default}infected {lightcoral}{3} {grey}(Recently knifed by {deepskyblue}{4}{grey})"
-        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecté {lightcoral}{3} {grey}(Recemment knife par {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecté {lightcoral}{3} {grey}(Récemment knifé par {deepskyblue}{4}{grey})"
         "es"    "{gold}{1} {deepskyblue}{2} {default}infectó a {lightcoral}{3} {grey}(Acuchillado recientemente por {deepskyblue}{4}{grey})"
         "ru"    "{gold}{1} {deepskyblue}{2} {default}заразил {lightcoral}{3} {grey}(Недавно был ударен ножом: {deepskyblue}{4}{grey})"
         "chi"   "{gold}{1} {deepskyblue}{2} {default}感染了 {lightcoral}{3} {grey}(最近被 {deepskyblue}{4}{grey} 刀过)"
@@ -54,7 +54,7 @@
     {
         "#format"    "{1:s},{2:N},{3:N},{4:N}"
         "en"    "{gold}{1} {deepskyblue}{2} {default}killed {lightcoral}{3} {grey}(Recently knifed by {deepskyblue}{4}{grey})"
-        "fr"    "{gold}{1} {deepskyblue}{2} {default}a tué {lightcoral}{3} {grey}(Recemment knife par {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a tué {lightcoral}{3} {grey}(Récemment knifé par {deepskyblue}{4}{grey})"
         "es"    "{gold}{1} {deepskyblue}{2} {default}mató a {lightcoral}{3} {grey}(Acuchillado recientemente por {deepskyblue}{4}{grey})"
         "ru"    "{gold}{1} {deepskyblue}{2} {default}убил {lightcoral}{3} {grey}(Недавно был ударен ножом: {deepskyblue}{4}{grey})"
         "chi"   "{gold}{1} {deepskyblue}{2} {default}击杀了 {lightcoral}{3} {grey}(最近被 {deepskyblue}{4}{grey} 刀过)"
@@ -64,7 +64,7 @@
     {
         "#format"    "{1:s},{2:N},{3:N},{4:s}"
         "en"    "{gold}{1} {deepskyblue}{2} {default}infected {lightcoral}{3} {grey}(Recently knifed by a disconnected player: {deepskyblue}{4}{grey})"
-        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecté {lightcoral}{3} {grey}(Recemment knife par un joueur deconnecte: {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a infecté {lightcoral}{3} {grey}(Récemment knifé par un joueur déconnecté: {deepskyblue}{4}{grey})"
         "es"    "{gold}{1} {deepskyblue}{2} {default}infectó a {lightcoral}{3} {grey}(Acuchillado recientemente por un jugador desconectado: {deepskyblue}{4}{grey})"
         "ru"    "{gold}{1} {deepskyblue}{2} {default}заразил {lightcoral}{3} {grey}(Недавно был ударен ножом отключившимся игроком: {deepskyblue}{4}{grey})"
         "chi"   "{gold}{1} {deepskyblue}{2} {default}感染了 {lightcoral}{3} {grey}(最近被已离线玩家刀过: {deepskyblue}{4}{grey})"
@@ -74,7 +74,7 @@
     {
         "#format"    "{1:s},{2:N},{3:N},{4:s}"
         "en"    "{gold}{1} {deepskyblue}{2} {default}killed {lightcoral}{3} {grey}(Recently knifed by a disconnected player: {deepskyblue}{4}{grey})"
-        "fr"    "{gold}{1} {deepskyblue}{2} {default}a tué {lightcoral}{3} {grey}(Recemment knife par un joueur deconnecte: {deepskyblue}{4}{grey})"
+        "fr"    "{gold}{1} {deepskyblue}{2} {default}a tué {lightcoral}{3} {grey}(Récemment knifé par un joueur déconnecté: {deepskyblue}{4}{grey})"
         "es"    "{gold}{1} {deepskyblue}{2} {default}mató a {lightcoral}{3} {grey}(Acuchillado recientemente por un jugador desconectado: {deepskyblue}{4}{grey})"
         "ru"    "{gold}{1} {deepskyblue}{2} {default}убил {lightcoral}{3} {grey}(Недавно был ударен ножом отключившимся игроком: {deepskyblue}{4}{grey})"
         "chi"   "{gold}{1} {deepskyblue}{2} {default}击杀了 {lightcoral}{3} {grey}(最近被已离线玩家刀过: {deepskyblue}{4}{grey})"
@@ -84,7 +84,7 @@
     {
         "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:N},{7:s}"
         "en"    "{1} {2} ({3}) infected {4} ({5}) (Recently knifed by {6} ({7}))"
-        "fr"    "{1} {2} ({3}) a infecté {4} ({5}) (Recemment knife par {6} ({7}))"
+        "fr"    "{1} {2} ({3}) a infecté {4} ({5}) (Récemment knifé par {6} ({7}))"
         "es"    "{1} {2} ({3}) infectó a {4} ({5}) (Acuchillado recientemente por {6} ({7}))"
         "ru"    "{1} {2} ({3}) заразил {4} ({5}) (Недавно был ударен ножом: {6} ({7}))"
         "chi"   "{1} {2} ({3}) 感染了 {4} ({5})（最近被 {6} ({7}) 刀过）"
@@ -94,7 +94,7 @@
     {
         "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:N},{7:s}"
         "en"    "{1} {2} ({3}) killed {4} ({5}) (Recently knifed by {6} ({7}))"
-        "fr"    "{1} {2} ({3}) a tué {4} ({5}) (Recemment knife par {6} ({7}))"
+        "fr"    "{1} {2} ({3}) a tué {4} ({5}) (Récemment knifé par {6} ({7}))"
         "es"    "{1} {2} ({3}) mató a {4} ({5}) (Acuchillado recientemente por {6} ({7}))"
         "ru"    "{1} {2} ({3}) убил {4} ({5}) (Недавно был ударен ножом: {6} ({7}))"
         "chi"   "{1} {2} ({3}) 击杀了 {4} ({5})（最近被 {6} ({7}) 刀过）"
@@ -104,7 +104,7 @@
     {
         "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:s}"
         "en"    "{1} {2} ({3}) infected {4} ({5}) (Recently knifed by a disconnected player: {6})"
-        "fr"    "{1} {2} ({3}) a infecté {4} ({5}) (Recemment knife par un joueur deconnecte: {6})"
+        "fr"    "{1} {2} ({3}) a infecté {4} ({5}) (Récemment knifé par un joueur déconnecté: {6})"
         "es"    "{1} {2} ({3}) infectó a {4} ({5}) (Acuchillado recientemente por un jugador desconectado: {6})"
         "ru"    "{1} {2} ({3}) заразил {4} ({5}) (Недавно был ударен ножом отключившимся игроком: {6})"
         "chi"   "{1} {2} ({3}) 感染了 {4} ({5})（最近被已离线玩家刀过：{6}）"
@@ -114,7 +114,7 @@
     {
         "#format"    "{1:s},{2:N},{3:s},{4:N},{5:s},{6:s}"
         "en"    "{1} {2} ({3}) killed {4} ({5}) (Recently knifed by a disconnected player: {6})"
-        "fr"    "{1} {2} ({3}) a tué {4} ({5}) (Recemment knife par un joueur deconnecte: {6})"
+        "fr"    "{1} {2} ({3}) a tué {4} ({5}) (Récemment knifé par un joueur déconnecté: {6})"
         "es"    "{1} {2} ({3}) mató a {4} ({5}) (Acuchillado recientemente por un jugador desconectado: {6})"
         "ru"    "{1} {2} ({3}) убил {4} ({5}) (Недавно был ударен ножом отключившимся игроком: {6})"
         "chi"   "{1} {2} ({3}) 击杀了 {4} ({5})（最近被已离线玩家刀过：{6}）"
