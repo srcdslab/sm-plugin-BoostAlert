@@ -245,7 +245,7 @@ public void ZR_OnClientInfected(int client, int attacker, bool motherInfect, boo
 			NotifyBoostInfectionEvent(g_iDamagedIDs[attacker], sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
 
 			Forward_OnBoostedKill(g_iDamagedIDs[attacker], client, g_iAttackerIDs[attacker], 1, "zombie_claws_of_death");
-			LogMessage("%L %s (%s) infected %L (%s), boosted by %L (%s)", g_iDamagedIDs[attacker], "infected", sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
+			LogMessage("%L infected (%s) infected %L (%s), boosted by %L (%s)", g_iDamagedIDs[attacker], sAttackerSteamID, client, sVictimId, g_iAttackerIDs[attacker], sBoosterSteamID);
 		}
 	}
 
