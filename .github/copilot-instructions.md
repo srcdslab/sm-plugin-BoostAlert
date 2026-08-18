@@ -7,14 +7,13 @@ This repository contains **BoostAlert**, a SourceMod plugin for Source engine ga
 ### Key Files Structure
 - `addons/sourcemod/scripting/BoostAlert.sp` - Main plugin source code
 - `addons/sourcemod/scripting/include/BoostAlert.inc` - Native functions and forwards for other plugins
-- `sourceknight.yaml` - Build configuration for SourceKnight build tool
-- `.github/workflows/ci.yml` - Automated CI/CD pipeline
+- `.github/workflows/ci.yml` - Automated CI/CD pipeline (native GitHub Actions build)
 
 ## Technology Stack
 
 - **Language**: SourcePawn (SourceMod scripting language)
 - **Platform**: SourceMod 1.12+ on Source engine games
-- **Build Tool**: SourceKnight (Python-based build system)
+- **Build Tool**: Native GitHub Actions workflow (spcomp via rumblefrog/setup-sp)
 - **Compiler**: SourcePawn compiler (spcomp)
 
 ## SourcePawn Language Specifics
@@ -60,21 +59,18 @@ Always include these at the top of `.sp` files:
 - **ZombieReloaded**: Zombie infection detection (optional)
 - **KnifeMode**: Knife game mode detection (optional)
 
-## Build System (SourceKnight)
+## Build System (GitHub Actions)
 
 ### Build Configuration
-The `sourceknight.yaml` file defines:
-- Project dependencies and their sources
+The `.github/workflows/ci.yml` file defines:
+- Project dependencies (cloned directly from their source repos) and their include paths
 - Build targets and output locations
-- Dependency unpacking rules
+- The spcomp compiler version used to compile the plugin
 
 ### Build Commands
 ```bash
-# Install dependencies and build
-sourceknight build
-
-# The CI system uses:
-# maxime1907/action-sourceknight@v1 with cmd: build
+# The CI system installs dependencies, then compiles with:
+spcomp -i include -o ../plugins/BoostAlert.smx BoostAlert.sp
 ```
 
 ### Output Structure
