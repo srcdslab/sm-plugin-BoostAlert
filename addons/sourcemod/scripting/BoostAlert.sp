@@ -28,22 +28,22 @@ int g_iGameTimes[MAXPLAYERS + 1] = { -1, ... };
 int g_iDamagedIDs[MAXPLAYERS + 1] = { -1, ... };
 int g_iAttackerIDs[MAXPLAYERS + 1] = { -1, ... };
 
-Handle g_hFwd_OnBoost = INVALID_HANDLE;
-Handle g_hFwd_OnBoostedKill = INVALID_HANDLE;
+GlobalForward g_hFwd_OnBoost = null;
+GlobalForward g_hFwd_OnBoostedKill = null;
 
 public Plugin myinfo =
 {
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, Obus + BotoX, maxime1907, .Rushaway",
-	version			= "3.0.0",
+	version			= "3.0.1",
 	url				= "https://github.com/srcdslab/sm-plugin-BoostAlert"
 };
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
-	g_hFwd_OnBoost = CreateGlobalForward("BoostAlert_OnBoost", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_String);
-	g_hFwd_OnBoostedKill = CreateGlobalForward("BoostAlert_OnBoostedKill", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_String);
+	g_hFwd_OnBoost = new GlobalForward("BoostAlert_OnBoost", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_String);
+	g_hFwd_OnBoostedKill = new GlobalForward("BoostAlert_OnBoostedKill", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_String);
 
 	RegPluginLibrary("BoostAlert");
 	return APLRes_Success;
@@ -91,21 +91,21 @@ public void OnLibraryRemoved(const char[] sName)
 		g_Plugin_ZR = false;
 }
 
-public Action Event_PlayerHurt(Handle hEvent, const char[] name, bool dontBroadcast)
+public Action Event_PlayerHurt(Event hEvent, const char[] name, bool dontBroadcast)
 {
-	int victim = GetClientOfUserId(GetEventInt(hEvent, "userid"));
+	int victim = GetClientOfUserId(hEvent.GetInt("userid"));
 
 	if (!IsValidClient(victim))
 		return Plugin_Continue;
 
-	int attacker = GetClientOfUserId(GetEventInt(hEvent, "attacker"));
+	int attacker = GetClientOfUserId(hEvent.GetInt("attacker"));
 	if (!IsValidClient(attacker) || victim == attacker)
 		return Plugin_Continue;
 
 	char sWepName[64];
-	GetEventString(hEvent, "weapon", sWepName, sizeof(sWepName));
+	hEvent.GetString("weapon", sWepName, sizeof(sWepName));
 
-	int iDamage = GetEventInt(hEvent, "dmg_health");
+	int iDamage = hEvent.GetInt("dmg_health");
 	int iVictimTeam = GetClientTeam(victim);
 	int iAttackerTeam = GetClientTeam(attacker);
 
@@ -117,7 +117,7 @@ public Action Event_PlayerHurt(Handle hEvent, const char[] name, bool dontBroadc
 		if (StrEqual(sWepName, "knife") && iDamage >= g_cvMinKnifeDamage.IntValue)
 			HandleKnifeAlert(victim, attacker, iDamage);
 
-		int hitgroup = GetEventInt(hEvent, "hitgroup");
+		int hitgroup = hEvent.GetInt("hitgroup");
 		bool isValidHitgroup = (g_cvBoostHitGroup.IntValue == 0) || (g_cvBoostHitGroup.IntValue != 0 && g_cvBoostHitGroup.IntValue == hitgroup);
 
 		if (iDamage >= g_cvMinimumDamage.IntValue && isValidHitgroup && IsBoostWeapon(sWepName))
