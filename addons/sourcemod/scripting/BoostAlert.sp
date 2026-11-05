@@ -11,9 +11,11 @@
 
 bool g_Plugin_ZR = false;
 bool g_bPlugin_KnifeMode = false;
+bool g_bPlugin_KbRestrict = false;
 
 #undef REQUIRE_PLUGIN
 #tryinclude <knifemode>
+#tryinclude <KnockbackRestrict>
 #define REQUIRE_PLUGIN
 
 ConVar g_cvNotificationTime, g_cvKnifeModMsgs, g_cvMinKnifeDamage;
@@ -77,18 +79,23 @@ public void OnPluginStart()
 public void OnAllPluginsLoaded()
 {
 	g_Plugin_ZR = LibraryExists("zombiereloaded");
+	g_bPlugin_KbRestrict = LibraryExists("KnockbackRestrict");
 }
 
 public void OnLibraryAdded(const char[] sName)
 {
 	if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = true;
+	else if (StrEqual(sName, "KnockbackRestrict"))
+		g_bPlugin_KbRestrict = true;
 }
 
 public void OnLibraryRemoved(const char[] sName)
 {
 	if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = false;
+	else if (StrEqual(sName, "KnockbackRestrict"))
+		g_bPlugin_KbRestrict = false;
 }
 
 public Action Event_PlayerHurt(Event hEvent, const char[] name, bool dontBroadcast)
@@ -112,6 +119,10 @@ public Action Event_PlayerHurt(Event hEvent, const char[] name, bool dontBroadca
 	if (iVictimTeam == CS_TEAM_T && iAttackerTeam == CS_TEAM_CT)
 	{
 		if (g_bPlugin_KnifeMode && g_cvKnifeModMsgs.IntValue > 0)
+			return Plugin_Continue;
+
+		// A kbanned CT deals full damage but with reduced knockback: not a boost.
+		if (IsClientKbanned(attacker))
 			return Plugin_Continue;
 
 		if (StrEqual(sWepName, "knife") && iDamage >= g_cvMinKnifeDamage.IntValue)
@@ -383,6 +394,15 @@ void Forward_OnBoostedKill(int attacker, int victim, int iInitialAttacker, int d
 	Call_PushCell(damage);
 	Call_PushString(sWeapon);
 	Call_Finish();
+}
+
+stock bool IsClientKbanned(int client)
+{
+#if defined _KnockbackRestrict_included_
+	if (g_bPlugin_KbRestrict && GetFeatureStatus(FeatureType_Native, "KR_ClientStatus") == FeatureStatus_Available)
+		return KR_ClientStatus(client);
+#endif
+	return false;
 }
 
 #if defined _KnifeMode_Included

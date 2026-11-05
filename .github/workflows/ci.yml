@@ -35,6 +35,8 @@ jobs:
           cp -R deps/zombiereloaded/src/addons/sourcemod/scripting/include/* addons/sourcemod/scripting/include/
           git clone --depth=1 https://github.com/srcdslab/sm-plugin-KnifeMode.git deps/knifemode
           cp -R deps/knifemode/addons/sourcemod/scripting/include/* addons/sourcemod/scripting/include/
+          git clone --depth=1 https://github.com/srcdslab/sm-plugin-KnockbackRestrict.git deps/knockbackrestrict
+          cp -R deps/knockbackrestrict/addons/sourcemod/scripting/include/* addons/sourcemod/scripting/include/
 
       - name: Build sourcemod plugin
         working-directory: addons/sourcemod/scripting
