@@ -19,6 +19,7 @@ BoostAlert is a SourceMod plugin for ZombieReloaded servers that detects CT -> Z
 Optional:
 
 - `knifemode` (if present, alerts can be suppressed via cvar)
+- `KnockbackRestrict` 4.5.0 or newer (if present, kbanned attackers raise no boost or knife alert)
 
 ## Installation
 
