@@ -30,6 +30,8 @@ int g_iGameTimes[MAXPLAYERS + 1] = { -1, ... };
 int g_iDamagedIDs[MAXPLAYERS + 1] = { -1, ... };
 int g_iAttackerIDs[MAXPLAYERS + 1] = { -1, ... };
 
+bool g_bKbanned[MAXPLAYERS + 1] = { false, ... };
+
 GlobalForward g_hFwd_OnBoost = null;
 GlobalForward g_hFwd_OnBoostedKill = null;
 
@@ -46,6 +48,12 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 {
 	g_hFwd_OnBoost = new GlobalForward("BoostAlert_OnBoost", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_String);
 	g_hFwd_OnBoostedKill = new GlobalForward("BoostAlert_OnBoostedKill", ET_Ignore, Param_Cell, Param_Cell, Param_Cell, Param_Cell, Param_String);
+
+#if defined _KnockbackRestrict_included_
+	// The include's __pl_knockbackrestrict_SetNTVOptional never runs: SourceMod looks for the
+	// exact case of __pl_KnockbackRestrict, so the native would be required without this.
+	MarkNativeAsOptional("KR_ClientStatus");
+#endif
 
 	RegPluginLibrary("BoostAlert");
 	return APLRes_Success;
@@ -80,6 +88,7 @@ public void OnAllPluginsLoaded()
 {
 	g_Plugin_ZR = LibraryExists("zombiereloaded");
 	g_bPlugin_KbRestrict = LibraryExists("KnockbackRestrict");
+	RefreshKbanCache();
 }
 
 public void OnLibraryAdded(const char[] sName)
@@ -87,7 +96,10 @@ public void OnLibraryAdded(const char[] sName)
 	if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = true;
 	else if (StrEqual(sName, "KnockbackRestrict"))
+	{
 		g_bPlugin_KbRestrict = true;
+		RefreshKbanCache();
+	}
 }
 
 public void OnLibraryRemoved(const char[] sName)
@@ -95,7 +107,15 @@ public void OnLibraryRemoved(const char[] sName)
 	if (StrEqual(sName, "zombiereloaded"))
 		g_Plugin_ZR = false;
 	else if (StrEqual(sName, "KnockbackRestrict"))
+	{
 		g_bPlugin_KbRestrict = false;
+		RefreshKbanCache();
+	}
+}
+
+public void OnClientDisconnect(int client)
+{
+	g_bKbanned[client] = false;
 }
 
 public Action Event_PlayerHurt(Event hEvent, const char[] name, bool dontBroadcast)
@@ -122,7 +142,7 @@ public Action Event_PlayerHurt(Event hEvent, const char[] name, bool dontBroadca
 			return Plugin_Continue;
 
 		// A kbanned CT deals full damage but with reduced knockback: not a boost.
-		if (IsClientKbanned(attacker))
+		if (g_bKbanned[attacker])
 			return Plugin_Continue;
 
 		if (StrEqual(sWepName, "knife") && iDamage >= g_cvMinKnifeDamage.IntValue)
@@ -404,6 +424,20 @@ stock bool IsClientKbanned(int client)
 #endif
 	return false;
 }
+
+// Full resync of g_bKbanned, KR_OnClientStatusChanged keeps it up to date afterwards.
+void RefreshKbanCache()
+{
+	for (int i = 1; i <= MaxClients; i++)
+		g_bKbanned[i] = IsClientConnected(i) && IsClientKbanned(i);
+}
+
+#if defined _KnockbackRestrict_included_
+public void KR_OnClientStatusChanged(int client, bool restricted)
+{
+	g_bKbanned[client] = restricted;
+}
+#endif
 
 #if defined _KnifeMode_Included
 public void KnifeMode_OnToggle(bool bEnabled)
