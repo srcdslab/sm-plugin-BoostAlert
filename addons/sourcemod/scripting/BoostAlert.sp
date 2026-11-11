@@ -40,7 +40,7 @@ public Plugin myinfo =
 	name			= "Boost Notifications",
 	description		= "Notify admins when a zombie gets boosted",
 	author			= "Kelyan3, Obus + BotoX, maxime1907, .Rushaway",
-	version			= "3.0.3",
+	version			= "3.0.4",
 	url				= "https://github.com/srcdslab/sm-plugin-BoostAlert"
 };
 
